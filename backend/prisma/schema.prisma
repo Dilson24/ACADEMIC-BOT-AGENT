@@ -4,12 +4,63 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+// backend/prisma/schema.prisma
+
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
-datasource db {
+datasource db {cdcd 
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+// --------------------------------------------------
+// MODELOS YAGNI (Solo lo esencial)
+// --------------------------------------------------
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String
+  
+  // Relaciones
+  courses   Course[]
+  tasks     Task[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Course {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  
+  // Relación con User
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  
+  // Relación con Tasks
+  tasks       Task[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Task {
+  id          Int      @id @default(autoincrement())
+  title       String
+  isCompleted Boolean  @default(false)
+  
+  // Relación con User
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+
+  // Relación opcional con Course (una tarea puede no estar atada a un curso)
+  courseId    Int?
+  course      Course?  @relation(fields: [courseId], references: [id])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
