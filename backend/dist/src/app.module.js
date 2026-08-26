@@ -13,12 +13,13 @@ const app_service_1 = require("./app.service");
 const tasks_module_1 = require("./tasks/tasks.module");
 const courses_module_1 = require("./courses/courses.module");
 const common_module_1 = require("./common/common.module");
+const ingestion_module_1 = require("./ingestion/ingestion.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [tasks_module_1.TasksModule, courses_module_1.CoursesModule, common_module_1.CommonModule],
+        imports: [tasks_module_1.TasksModule, courses_module_1.CoursesModule, common_module_1.CommonModule, ingestion_module_1.IngestionModule],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })
